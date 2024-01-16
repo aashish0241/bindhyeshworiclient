@@ -8,7 +8,7 @@ export default function Event() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch("http://localhost:3000/api/event/event");
+        const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/event/event`);
         const data = await response.json();
         const sortedData = data.sort(
           (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
@@ -24,7 +24,7 @@ export default function Event() {
 
   useEffect(() => {
     if (selectedPost !== null) {
-      fetch(`http://localhost:3000/api/event/event/${selectedPost}`)
+      fetch(`${process.env.REACT_APP_BACKEND_URL}/api/event/event/${selectedPost}`)
         .then((response) => response.json())
         .then((data) => {
           setSelectedPostDetails(data);

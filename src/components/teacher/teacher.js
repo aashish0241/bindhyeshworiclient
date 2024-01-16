@@ -6,7 +6,7 @@ export default function Teacher() {
   useEffect(() => {
     const fetchTeachers = async () => {
       try {
-        const response = await fetch('http://localhost:3000/api/teacher/teacher');
+        const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/teacher/teacher`);
         const data = await response.json();
         // Sort the data by createdAt date in descending order
         const sortedData = data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));

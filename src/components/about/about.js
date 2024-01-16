@@ -1,14 +1,14 @@
 import React from 'react';
 
 const links = [
-  { name: 'Open roles', href: '#' },
-  { name: 'Internship program', href: '#' },
+  { name: 'Good Library', href: '#' },
+  { name: 'Quality Teaching:', href: '#' },
   { name: 'Our values', href: '#' },
   { name: 'Meet our leadership', href: '#' },
 ];
 
 const stats = [
-  { name: 'Offices worldwide', value: '12' },
+  { name: 'Established on', value: '2017' },
   { name: 'Full-time colleagues', value: '300+' },
   { name: 'Hours per week', value: '40' },
   { name: 'Paid time off', value: 'Unlimited' },
