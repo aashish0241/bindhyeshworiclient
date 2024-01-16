@@ -9,7 +9,7 @@ const StudyCard = ({ study }) => (
         </time>
       </div>
       <div className="group relative">
-        <img src={study.image} alt="" className="h-60 w-60  bg-gray-50" />
+        <img src={study.file} alt="" className="h-60 w-60  bg-gray-50" />
         <h3 className="mt-3 text-lg font-semibold leading-6 text-gray-900">
           subject:{study.name}
         </h3>
