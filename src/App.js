@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Route, Routes } from "react-router-dom";  
 import About from "./components/about/about";
 import Contact from "./components/contact/contact";
 import Event from "./components/event/event";
