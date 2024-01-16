@@ -20,9 +20,8 @@ export default function Homepage() {
           </div>
           <div className="container relative mx-auto">
             <div className="items-center flex flex-wrap">
-            <div className="w-full lg:w-10/12 px-4 ml-auto mr-auto text-center">
             <div className="w-full lg:w-10/12 px-4 mx-auto text-center">
-  <div className="pr-4 lg:pr-12 lg:flex lg:items-center"> {/* Updated line */}
+  <div className="pr-4   lg:items-center"> {/* Updated line */}
     <h1 className="text-white font-semibold text-3xl max-w-content mb-4 lg:mb-0"> {/* Updated line */}
       Shree Bindhyeshwori Secondary School
     </h1>
@@ -39,7 +38,6 @@ export default function Homepage() {
   </div>
 </div>
 
-</div>
 
             </div>
           </div>
