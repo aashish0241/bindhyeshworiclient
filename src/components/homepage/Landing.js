@@ -20,23 +20,24 @@ export default function Homepage() {
           </div>
           <div className="container relative mx-auto">
             <div className="items-center flex flex-wrap">
-              <div className="w-full lg:w-10/12 px-4 ml-auto mr-auto text-center">
-                <div className="pr-12">
-                  <h1 className="text-white font-semibold text-5xl max-w-content">
-                    Shree Bindhyeshwori Secondary School
-                  </h1>
-                  <p className="mt-4 text-3lg text-white">
-                    Shree Bindhyeshwori Secondary School is known for its
-                    excellent education and vibrant learning atmosphere. The
-                    dedicated educators focus on holistic student development,
-                    emphasizing not only academic excellence but also essential
-                    life skills. The curriculum is thoughtfully crafted to
-                    empower students with the knowledge and skills needed for
-                    future success, reflecting the school's commitment to
-                    quality education.
-                  </p>
-                </div>
-              </div>
+            <div className="w-full lg:w-10/12 px-4 ml-auto mr-auto text-center">
+  <div className="pr-12 flex flex-col items-center"> {/* Updated line */}
+    <h1 className="text-white font-semibold text-3xl max-w-content">
+      Shree Bindhyeshwori Secondary School
+    </h1>
+    <p className="mt-4 text-2lg text-white flex items-center">
+      Shree Bindhyeshwori Secondary School is known for its
+      excellent education and vibrant learning atmosphere. The
+      dedicated educators focus on holistic student development,
+      emphasizing not only academic excellence but also essential
+      life skills. The curriculum is thoughtfully crafted to
+      empower students with the knowledge and skills needed for
+      future success, reflecting the school's commitment to
+      quality education.
+    </p>
+  </div>
+</div>
+
             </div>
           </div>
           <div
