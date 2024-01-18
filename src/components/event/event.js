@@ -25,8 +25,22 @@ const Event = () => {
     fetchData();
   }, []);
 
-  const handlePostClick = (postId) => {
-    setSelectedPost(selectedPost === postId ? null : postId);
+  const fetchPostDetails = async (postId) => {
+    try {
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/event/event/${postId}`);
+      const data = await response.json();
+      setSelectedPostDetails(data);
+    } catch (error) {
+      console.error("Error fetching post details:", error);
+    }
+  };
+
+  const handlePostClick = async (postId) => {
+    setSelectedPost((prevPost) => (prevPost === postId ? null : postId));
+
+    if (postId) {
+      await fetchPostDetails(postId);
+    }
   };
 
   const truncateDescription = (description, limit) => {
@@ -39,7 +53,7 @@ const Event = () => {
           {truncatedText}
           <span
             className="text-blue-600 cursor-pointer"
-            onClick={() => handlePostClick(selectedPost)}
+            onClick={() => handlePostClick(selectedPost === posts.id ? null : posts.id)}
           >
             {" Read More"}
           </span>
@@ -64,8 +78,8 @@ const Event = () => {
 
         <div className="mx-auto grid mt-10 max-w-2xl grid-cols-1 gap-x-8 gap-y-16 border-t border-gray-200 pt-10 sm:mt-16 sm:pt-16 lg:mx-0 lg:max-w-none lg:grid-cols-3">
           {isLoading ? (
-            <div className=" bg-blue items-center justify-center flex text-black">
-             <h1 className="text-black text-2xl font-bold">Wait  Data is Loading...</h1>
+            <div className="bg-blue-200 flex items-center justify-center text-black">
+              <h1 className="text-2xl font-bold">Wait, Data is Loading...</h1>
             </div>
           ) : (
             posts.map((post) => (
@@ -81,7 +95,7 @@ const Event = () => {
                     Post date: {post.date}
                   </time>
                 </div>
-                <div className="group relative bg-gray-200 bg-opacity-50 p-6 ">
+                <div className="group relative bg-gray-200 bg-opacity-50 p-6">
                   <h3 className="mt-3 text-lg font-semibold leading-6 text-gray-900 group-hover:text-gray-600">
                     <div onClick={() => handlePostClick(post.id)}>
                       <span className="absolute inset-0 text-3xl font-bold flex items-center" />
@@ -91,7 +105,7 @@ const Event = () => {
                   <img
                     src={post.file}
                     alt="logo"
-                    className="mt-5 h-60 w-80  bg-gray-50"
+                    className="mt-5 h-60 w-80 bg-gray-50"
                   />
                   <p className="mt-5 text-sm leading-6 text-gray-600">
                     {truncateDescription(post.description, 40)}
