@@ -2,15 +2,22 @@ import React, { useState, useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
 
 const StudyCard = ({ study }) => (
-  <NavLink to={`/study/${study._id}`} className="group">
-    <article key={study._id} className="flex flex-col items-start justify-between max-w-xl">
+  <NavLink to={`/study/${study._id}`} className="group" key={study._id}>
+    <article className="flex flex-col items-start justify-between max-w-xl">
       <div className="flex items-center gap-x-4 text-xs">
         <time dateTime={study.createdAt} className="text-gray-500">
           {new Date(study.createdAt).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })}
         </time>
       </div>
       <div className="group relative">
-        <img src={study.file} alt="" className="h-60 w-60 bg-gray-50" />
+        <img
+          src={study.file}
+          alt=""
+          className="h-60 w-60 bg-gray-50"
+          onError={(e) => {
+            e.target.src = 'fallback-image-url';
+          }}
+        />
         <h3 className="mt-3 text-lg font-semibold leading-6 text-gray-900">
           Subject: {study.name}
         </h3>
@@ -33,14 +40,19 @@ const Study = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
+    let isMounted = true;
+
     const fetchStudies = async () => {
       try {
         const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/study/study`);
         const data = await response.json();
-        const sortedData = data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-        setStudies(sortedData);
-        setFilteredStudies(sortedData);
-        setIsLoading(false);
+
+        if (isMounted) {
+          const sortedData = data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+          setStudies(sortedData);
+          setFilteredStudies(sortedData);
+          setIsLoading(false);
+        }
       } catch (error) {
         console.error('Error fetching study data:', error);
         setIsLoading(false);
@@ -48,6 +60,10 @@ const Study = () => {
     };
 
     fetchStudies();
+
+    return () => {
+      isMounted = false;
+    };
   }, []);
 
   useEffect(() => {
@@ -71,7 +87,17 @@ const Study = () => {
           <p className="mt-2 text-lg leading-6 text-gray-600">
             Explore our diverse range of study topics.
           </p>
-          
+          <div className="flex mt-4 space-x-2 flex-wrap">
+            {[...Array(10).keys()].map((classNumber) => (
+              <button
+                key={classNumber + 1}
+                onClick={() => handleClassFilter(classNumber + 1)}
+                className={`bg-blue-500 text-white px-4 py-2 rounded focus:outline-none mb-2 ${
+                  selectedClass === classNumber + 1 ? 'bg-blue-700' : ''
+                }`}
+              >
+                Class {classNumber + 1}
+              </button>
             ))}
             <button
               onClick={() => handleClassFilter(null)}
