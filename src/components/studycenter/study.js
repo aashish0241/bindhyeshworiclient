@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
 
 const StudyCard = ({ study }) => (
-  <NavLink to={`/study/${study._id}`} className="group" key={study._id}>
+  <NavLink to={study.link} className={`group ${study.class}`}>
     <article className="flex flex-col items-start justify-between max-w-xl">
       <div className="flex items-center gap-x-4 text-xs">
         <time dateTime={study.createdAt} className="text-gray-500">
@@ -10,18 +10,10 @@ const StudyCard = ({ study }) => (
         </time>
       </div>
       <div className="group relative">
-        <img
-          src={study.file}
-          alt=""
-          className="h-60 w-60 bg-gray-50"
-          onError={(e) => {
-            e.target.src = 'fallback-image-url';
-          }}
-        />
+        <img src={study.file} alt="" className="h-60 w-60 bg-gray-50" />
         <h3 className="mt-3 text-lg font-semibold leading-6 text-gray-900">
           Subject: {study.name}
         </h3>
-        <p className="text-gray-600 text-xl font-bold">Class: {study.term}</p>
         <p className="mt-5 line-clamp-3 text-sm leading-6 text-gray-600">{study.description}</p>
       </div>
       <div className="relative mt-8 flex items-center gap-x-4">
@@ -35,21 +27,18 @@ const StudyCard = ({ study }) => (
 
 const Study = () => {
   const [studies, setStudies] = useState([]);
+  const [selectedClass, setSelectedClass] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    let isMounted = true;
-
     const fetchStudies = async () => {
       try {
+        setSelectedClass(null);
         const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/study/study`);
         const data = await response.json();
-
-        if (isMounted) {
-          const sortedData = data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-          setStudies(sortedData);
-          setIsLoading(false);
-        }
+        const sortedData = data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+        setStudies(sortedData);
+        setIsLoading(false);
       } catch (error) {
         console.error('Error fetching study data:', error);
         setIsLoading(false);
@@ -57,11 +46,11 @@ const Study = () => {
     };
 
     fetchStudies();
-
-    return () => {
-      isMounted = false;
-    };
   }, []);
+
+  const filteredStudies = selectedClass
+    ? studies.filter((study) => study.class === selectedClass)
+    : studies;
 
   return (
     <div className="bg-white py-8 sm:py-12 lg:py-16">
@@ -76,8 +65,8 @@ const Study = () => {
           <p className="text-2xl font-bold text-center mt-8">Data is loading...</p>
         ) : (
           <div className="grid mt-8 max-w-2xl grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-16">
-            {studies.map((study) => (
-              <StudyCard key={study._id} study={study} />
+            {filteredStudies.map((study) => (
+              <StudyCard key={study.id} study={study} />
             ))}
           </div>
         )}
