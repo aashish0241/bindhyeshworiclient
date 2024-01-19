@@ -71,17 +71,7 @@ const Study = () => {
           <p className="mt-2 text-lg leading-6 text-gray-600">
             Explore our diverse range of study topics.
           </p>
-          <div className="flex mt-4 space-x-2 flex-wrap">
-            {[...Array(10).keys()].map((classNumber) => (
-              <button
-                key={classNumber + 1}
-                onClick={() => handleClassFilter(classNumber + 1)}
-                className={`bg-blue-500 text-white px-4 py-2 rounded focus:outline-none mb-2 ${
-                  selectedClass === classNumber + 1 ? 'bg-blue-700' : ''
-                }`}
-              >
-                Class {classNumber + 1}
-              </button>
+          
             ))}
             <button
               onClick={() => handleClassFilter(null)}
