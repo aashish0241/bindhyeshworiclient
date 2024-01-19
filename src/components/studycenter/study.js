@@ -35,8 +35,6 @@ const StudyCard = ({ study }) => (
 
 const Study = () => {
   const [studies, setStudies] = useState([]);
-  const [filteredStudies, setFilteredStudies] = useState([]);
-  const [selectedClass, setSelectedClass] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -50,7 +48,6 @@ const Study = () => {
         if (isMounted) {
           const sortedData = data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
           setStudies(sortedData);
-          setFilteredStudies(sortedData);
           setIsLoading(false);
         }
       } catch (error) {
@@ -66,19 +63,6 @@ const Study = () => {
     };
   }, []);
 
-  useEffect(() => {
-    if (selectedClass === null) {
-      setFilteredStudies(studies);
-    } else {
-      const filteredByClass = studies.filter((study) => study.term === selectedClass);
-      setFilteredStudies(filteredByClass);
-    }
-  }, [selectedClass, studies]);
-
-  const handleClassFilter = (classNumber) => {
-    setSelectedClass(classNumber);
-  };
-
   return (
     <div className="bg-white py-8 sm:py-12 lg:py-16">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -87,33 +71,12 @@ const Study = () => {
           <p className="mt-2 text-lg leading-6 text-gray-600">
             Explore our diverse range of study topics.
           </p>
-          <div className="flex mt-4 space-x-2 flex-wrap">
-            {[...Array(10).keys()].map((classNumber) => (
-              <button
-                key={classNumber + 1}
-                onClick={() => handleClassFilter(classNumber + 1)}
-                className={`bg-blue-500 text-white px-4 py-2 rounded focus:outline-none mb-2 ${
-                  selectedClass === classNumber + 1 ? 'bg-blue-700' : ''
-                }`}
-              >
-                Class {classNumber + 1}
-              </button>
-            ))}
-            <button
-              onClick={() => handleClassFilter(null)}
-              className={`bg-blue-500 text-white px-4 py-2 rounded focus:outline-none mb-2 ${
-                selectedClass === null ? 'bg-blue-700' : ''
-              }`}
-            >
-              Show All
-            </button>
-          </div>
         </div>
         {isLoading ? (
           <p className="text-2xl font-bold text-center mt-8">Data is loading...</p>
         ) : (
           <div className="grid mt-8 max-w-2xl grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-16">
-            {filteredStudies.map((study) => (
+            {studies.map((study) => (
               <StudyCard key={study._id} study={study} />
             ))}
           </div>
