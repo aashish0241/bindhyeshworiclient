@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
 
 const StudyCard = ({ study }) => (
-  <NavLink to={`/study/${study.id}`} className="group">
-    <article key={study.id} className="flex flex-col items-start justify-between max-w-xl">
+  <NavLink to={`/study/${study._id}`} className="group">
+    <article key={study._id} className="flex flex-col items-start justify-between max-w-xl">
       <div className="flex items-center gap-x-4 text-xs">
         <time dateTime={study.createdAt} className="text-gray-500">
           {new Date(study.createdAt).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })}
@@ -14,7 +14,7 @@ const StudyCard = ({ study }) => (
         <h3 className="mt-3 text-lg font-semibold leading-6 text-gray-900">
           Subject: {study.name}
         </h3>
-        <p className="text-gray-600 text-xl font-bold">Class: {study.class}</p>
+        <p className="text-gray-600 text-xl font-bold">Class: {study.term}</p>
         <p className="mt-5 line-clamp-3 text-sm leading-6 text-gray-600">{study.description}</p>
       </div>
       <div className="relative mt-8 flex items-center gap-x-4">
@@ -54,7 +54,7 @@ const Study = () => {
     if (selectedClass === null) {
       setFilteredStudies(studies);
     } else {
-      const filteredByClass = studies.filter((study) => study.class === selectedClass);
+      const filteredByClass = studies.filter((study) => study.term === selectedClass);
       setFilteredStudies(filteredByClass);
     }
   }, [selectedClass, studies]);
