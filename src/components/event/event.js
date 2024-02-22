@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
+import Loader from "../../assets/loader.gif";
 
 const Event = () => {
   const [posts, setPosts] = useState([]);
-  const [selectedPost, setSelectedPost] = useState(null);
+  const [selectedPostIndex, setSelectedPostIndex] = useState(null);
   const [selectedPostDetails, setSelectedPostDetails] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -11,11 +12,10 @@ const Event = () => {
       try {
         const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/event/event`);
         const data = await response.json();
-        const sortedData = data.sort(
-          (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
-        );
+        const sortedData = data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
         setPosts(sortedData);
         setIsLoading(false);
+        
       } catch (error) {
         console.error("Error fetching data:", error);
         setIsLoading(false);
@@ -24,7 +24,7 @@ const Event = () => {
 
     fetchData();
   }, []);
-
+  
   const fetchPostDetails = async (postId) => {
     try {
       const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/event/event/${postId}`);
@@ -35,15 +35,15 @@ const Event = () => {
     }
   };
 
-  const handlePostClick = async (postId) => {
-    setSelectedPost((prevPost) => (prevPost === postId ? null : postId));
-
-    if (postId) {
-      await fetchPostDetails(postId);
+  const handlePostClick = async (index) => {
+    setSelectedPostIndex((prevIndex) => (prevIndex === index ? null : index));
+    console.log(selectedPostDetails);
+    if (index !== null) {
+      await fetchPostDetails(posts[index].id);
     }
   };
 
-  const truncateDescription = (description, limit) => {
+  const truncateDescription = (description, limit, index) => {
     const words = description.split(" ");
     const truncatedText = words.slice(0, limit).join(" ");
 
@@ -53,7 +53,7 @@ const Event = () => {
           {truncatedText}
           <span
             className="text-blue-600 cursor-pointer"
-            onClick={() => handlePostClick(selectedPost === posts.id ? null : posts.id)}
+            onClick={() => handlePostClick(index)}
           >
             {" Read More"}
           </span>
@@ -78,50 +78,30 @@ const Event = () => {
 
         <div className="mx-auto grid mt-10 max-w-2xl grid-cols-1 gap-x-8 gap-y-16 border-t border-gray-200 pt-10 sm:mt-16 sm:pt-16 lg:mx-0 lg:max-w-none lg:grid-cols-3">
           {isLoading ? (
-            <div className="bg-blue-200 flex items-center justify-center text-black">
-              <h1 className="text-2xl font-bold">Wait, Data is Loading...</h1>
+            <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', zIndex: 9999 }}>
+              <img src={Loader} alt="Loading..." style={{ width: '100px', height: '100px', display: 'block', margin: '0 auto' }} />
+              <p className="text-2xl text-center font-bold">Wait student Data is Loading...</p>
             </div>
           ) : (
-            posts.map((post) => (
-              <article
-                key={post.id}
-                className="flex max-w-xl flex-col items-start justify-between"
-              >
-                <div className="flex items-center gap-x-4 text-xs">
-                  <time
-                    dateTime={post.datetime}
-                    className="text-gray-500 text-xl font-bold"
-                  >
-                    Post date: {post.date}
-                  </time>
+            posts.map((post, index) => (
+              <article key={index} className="rounded-lg overflow-hidden shadow-lg">
+                <img src={post.file} alt="Event" className="w-full h-48 object-cover rounded-t-lg" />
+                <div className="px-6 py-4">
+                  <div className="font-bold text-xl mb-2">{post.title}</div>
+                  <p className="text-gray-700 text-base">{truncateDescription(post.description, 10, index)}</p>
                 </div>
-                <div className="group relative bg-gray-200 bg-opacity-50 p-6">
-                  <h3 className="mt-3 text-lg font-semibold leading-6 text-gray-900 group-hover:text-gray-600">
-                    <div onClick={() => handlePostClick(post.id)}>
-                      <span className="absolute inset-0 text-3xl font-bold flex items-center" />
-                      {post.title}
-                    </div>
-                  </h3>
-                  <img
-                    src={post.file}
-                    alt="logo"
-                    className="mt-5 h-60 w-80 bg-gray-50"
-                  />
-                  <p className="mt-5 text-sm leading-6 text-gray-600">
-                    {truncateDescription(post.description, 40)}
-                  </p>
-                  {selectedPost === post.id && (
-                    <>
-                      <p className="mt-5 text-sm leading-6 text-gray-600">
-                        {post.description}
-                      </p>
-                      <p className="text-sm leading-6 font-semibold text-gray-900">
-                        {post.name}
-                      </p>
-                      {selectedPostDetails}
-                    </>
-                  )}
+                <div className="px-6 pt-4 pb-2">
+                  <button onClick={() => handlePostClick(index)} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                    {selectedPostIndex === index ? "Hide Details" : "Show Details"}
+                  </button>
                 </div>
+                {selectedPostIndex === index && (
+                  <div className="px-6 py-4">
+                    <p className="text-gray-700 text-base">{post.description}</p>
+                    
+                    {/* Render additional details if needed */}
+                  </div>
+                )}
               </article>
             ))
           )}

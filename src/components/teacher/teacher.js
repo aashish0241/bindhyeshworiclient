@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import Loader from "../../assets/loader.gif";
 
 export default function Teacher() {
   const [teachers, setTeachers] = useState([]);
@@ -29,9 +30,10 @@ export default function Teacher() {
           <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Our School Teachers</h2>
           <p className="mt-2 text-lg leading-8 text-gray-600">
             {isLoading ? 
-              <div className="flex justify-center items-center">
-                <p className="text-3xl font-bold">Wait, Data is Loading...</p>
-              </div>
+              <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', zIndex: 9999 }}>
+              <img src={Loader} alt="Loading..." style={{ width: '100px', height: '100px', display: 'block', margin: '0 auto' }} />
+              <p className="text-2xl text-center font-bold">Wait student Data is Loading...</p>
+            </div>
               : 'Meet our dedicated and skilled teaching professionals.'}
           </p>
         </div>

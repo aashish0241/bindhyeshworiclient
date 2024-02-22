@@ -9,7 +9,7 @@ const navigation = [
   { name: "About us", route: "/about", current: false },
   { name: "Our Teacher", route: "/teacher", current: false },
   { name: "Contact Us", route: "/contact", current: false },
-  { name: "Student Study", route: "/study", current: false },
+  { name: "Study Material", route: "/study", current: false },
   { name: "Our Location", route: "/map", current: false },
 ];
 
