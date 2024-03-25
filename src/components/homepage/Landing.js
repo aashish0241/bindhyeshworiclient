@@ -337,7 +337,7 @@ export default function Homepage() {
 
 <hr className="text-xl" style={{ height: '4px' }} />
 
-<p className="dark:text-gray-400"> currently study BIT</p>
+
 
 <hr className="text-xl" style={{ height: '4px' }} />
 
