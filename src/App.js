@@ -10,6 +10,7 @@ import Map from "./components/map/map";
 import Study from "./components/studycenter/study";
 import Teacher from "./components/teacher/teacher";
 import "./input.css";
+import NotFound from "./components/NotFound/notFound";
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
 
           <Route path="/study" element={<Study />} />
           <Route path="/map" element={<Map />} />
+          <Route path="/*" element={<NotFound />} />
         </Routes>
 
         <Footer />
